@@ -1,10 +1,45 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
+const multer = require("multer");
+const dotenv = require("dotenv");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./upload");
+  },
+  filename: (req, file, cb) => {
+    const extArray = file.mimetype.split("/");
+    const extension = extArray[extArray.length - 1];
+    cb(null, Date.now() + "." + extension);
+  },
+});
+
+dotenv.config();
+
+const upload = multer({ storage: storage });
+const { BlobServiceClient } = require("@azure/storage-blob");
+
+const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_KEY);
 
 //create a post
-router.post("/", async (req, res) => {
-  const newPost = new Post(req.body);
+router.post("/", upload.single("file"), async (req, res) => {
+  const containerName = req.body.userId;
+  const blobName = req.file.filename;
+  try {
+    const filePath = "./" + req.file.path;
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    const uploadBlobResponse = await blockBlobClient.uploadFile(filePath);
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+
+  const newPost = new Post({
+    ...req.body,
+    img: `https://friendster.blob.core.windows.net/${containerName}/${blobName}`,
+  });
+
   try {
     const savedPost = await newPost.save();
     res.status(200).json(savedPost);
@@ -79,18 +114,16 @@ router.get("/timeline/:userId", async (req, res) => {
         return Post.find({ userId: friendId });
       })
     );
-    res.json(userPosts.concat(...friendPosts))
+    res.json(userPosts.concat(...friendPosts));
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
 //get user's all posts
-
-router.get("/profile/:username", async (req, res) => {
+router.get("/profile/:userId", async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.params.username });
-    const posts = await Post.find({ userId: user._id });
+    const posts = await Post.find({ userId: req.params.userId });
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);

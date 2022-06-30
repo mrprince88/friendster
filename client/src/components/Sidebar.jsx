@@ -4,9 +4,8 @@ import {RssFeed,Chat,PlayCircleFilledOutlined,Group,Bookmark,HelpOutline,WorkOut
 
 const styles=makeStyles({
   sidebar: {
-    height:'calc(100vh - 60px)',
-    position: 'sticky',
-    top: '60px'
+    top: '8vh',
+    position:'sticky'
   }
 })
 

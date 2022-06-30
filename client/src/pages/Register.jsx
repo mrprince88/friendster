@@ -1,117 +1,186 @@
-import {CssBaseline,Card,CardContent,Grid,makeStyles,Typography,Button} from '@material-ui/core'
+import {
+  CssBaseline,
+  Card,
+  CardContent,
+  Grid,
+  makeStyles,
+  Typography,
+  Button,
+} from "@material-ui/core";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const styles=makeStyles(theme => ({
-    login: {
-        background:'#f0f2f5',
-        width:'100vw',
-        height:'100vh',
+const styles = makeStyles((theme) => ({
+  login: {
+    background: "#f0f2f5",
+    minWidth: "500px",
+    minHeight: "950px",
+  },
+  container: {
+    width: "70%",
+    height: "70%",
+    [theme.breakpoints.down("sm")]: {
+      height: "100%",
     },
-    container: {
-        width:'70%',
-        height:'70%',
-        [theme.breakpoints.down('sm')]: {
-            height:'100%'
-        }
+  },
+  logo: {
+    fontSize: "50px",
+    fontWeight: "800",
+    color: theme.palette.primary.main,
+    marginBottom: "10px",
+  },
+  subtitle: {
+    fontSize: "24px",
+  },
+  registerWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+  registerBox: {
+    height: "100%",
+    width: "90%",
+    backgroundColor: "white",
+    borderRadius: "10px",
+    [theme.breakpoints.down("sm")]: {
+      height: "100%",
     },
-    logo: {
-        fontSize:'50px',
-        fontWeight:'800',
-        color: theme.palette.primary.main,
-        marginBottom:'10px',
+  },
+  registerContent: {
+    height: "100%",
+    padding: "15px",
+  },
+  registerInput: {
+    height: "50px",
+    width: "100%",
+    borderRadius: "10px",
+    border: "1px solid grey",
+    fontSize: "18px",
+    paddingLeft: "20px",
+    marginBottom: "15px",
+    "&:focus": {
+      outline: "none",
     },
-    subtitle: {
-        fontSize:'24px'
+  },
+  loginForgot: {
+    width: "100%",
+    textAlign: "center",
+    marginBottom: "15px",
+
+    color: theme.palette.primary.main,
+  },
+  regsiterButton: {
+    width: "100%",
+    height: "50px",
+    borderRadius: "10px",
+    marginBottom: "15px",
+  },
+  loginButton: {
+    height: "50px",
+    width: "100%",
+    borderRadius: "10px",
+    background: "#66bb6a",
+    marginBottom: "15px",
+
+    "&:hover": {
+      background: "#388e3c",
     },
-    registerWrapper: {
-        display:'flex',
-        flexDirection:'column',
-        justifyContent:'center',
-        alignItems:'flex-start'
-    },
-    registerBox: {
-        height:'75%',
-        width:'80%',
-        backgroundColor:'white',
-        borderRadius:'10px',
-        [theme.breakpoints.down('sm')]: {
-            height:'100%'
-        }
-    },
-    registerContent: {
-        height:'100%',
-        display:'flex',
-        flexDirection:'column',
-        justifyContent:'space-between'
-    },
-    registerInput: {
-        height:'50px',
-        borderRadius:'10px',
-        border:'1px solid grey',
-        fontSize:'18px',
-        paddingLeft:'20px',
-        '&:focus' :{
-            outline:'none'
-        }
-    },
-    loginForgot:{
-        textAlign:'center',
-        color:theme.palette.primary.main
-    },
-    regsiterButton: {
-        height:'50px',
-        borderRadius:'10px',
-    },
-    loginButton: {
-        height:'50px',
-        borderRadius:'10px',
-        background:'#66bb6a',
-        '&:hover': {
-            background:'#388e3c'
-        }
-    }
-}))
+  },
+}));
 
 export default function Register() {
-    const classes=styles();
+  const classes = styles();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
-    return (
-        <>
-        <CssBaseline/>
-        <Grid container justifyContent='center' alignContent='center' className={classes.login}>
-            <Grid container direction='row' spacing={1} className={classes.container}>
-                <Grid item md={7} className={classes.registerWrapper}>
-                        <Typography className={classes.logo}>Friendster</Typography>
-                        <Typography className={classes.subtitle}>Connect with friends around you</Typography>
-                </Grid>
-                <Grid item md={5} className={classes.registerWrapper}>
-                    <Card className={classes.registerBox}>
-                        <CardContent className={classes.registerContent}>
-                            <input placeholder="Username" className={classes.registerInput}/>
-                            <input placeholder="Email" className={classes.registerInput} />
-                            <input placeholder="Enter password" className={classes.registerInput} />
-                            <input placeholder="Enter password again" className={classes.registerInput} />
-                            <Button
-                            variant="contained"
-                            disableElevation="true"
-                            className={classes.regsiterButton}
-                            color="primary"
-                            >
-                            Sign Up
-                            </Button>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) alert("Passwords Not Match");
+    else {
+      const user = {
+        username: username,
+        email: email,
+        password: password,
+      };
 
-                            <Button
-                            variant="contained"
-                            disableElevation="true"
-                            className={classes.loginButton}
-                            color="primary"
-                            >
-                            Log into Account
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
+      axios
+        .post("/auth/register", user)
+        .then(navigate("/login"))
+        .catch((err) => console.log(err));
+    }
+  };
+
+  return (
+    <>
+      <CssBaseline />
+      <Grid container justifyContent="center" alignContent="center" className={classes.login}>
+        <Grid container direction="row" spacing={1} className={classes.container}>
+          <Grid item md={7} className={classes.registerWrapper}>
+            <Typography className={classes.logo}>Friendster</Typography>
+            <Typography className={classes.subtitle}>Connect with friends around you</Typography>
+          </Grid>
+          <Grid item md={5} className={classes.registerWrapper}>
+            <Card className={classes.registerBox} onSubmit={handleSubmit}>
+              <form className={classes.registerContent}>
+                <input
+                  placeholder="Username"
+                  className={classes.registerInput}
+                  required
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                  placeholder="Email"
+                  type="email"
+                  className={classes.registerInput}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  placeholder="Enter password"
+                  className={classes.registerInput}
+                  type="password"
+                  required
+                  minLength="6"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <input
+                  placeholder="Enter password again"
+                  className={classes.registerInput}
+                  required
+                  type="password"
+                  minLength="6"
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  disableElevation="true"
+                  className={classes.regsiterButton}
+                  color="primary"
+                  type="submit"
+                >
+                  Sign Up
+                </Button>
+
+                <Button
+                  variant="contained"
+                  disableElevation="true"
+                  className={classes.loginButton}
+                  color="primary"
+                  onClick={() => navigate("/login")}
+                >
+                  Log into Account
+                </Button>
+              </form>
+            </Card>
+          </Grid>
         </Grid>
-        </>
-    )
+      </Grid>
+    </>
+  );
 }

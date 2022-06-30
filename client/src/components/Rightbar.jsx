@@ -33,10 +33,11 @@ const StyledBadge = withStyles((theme) => ({
 
 export default function Rightbar() {
     return (
-        <List style={{padding:'20px',
-            height:'calc(100vh - 60px)',
-            position: 'sticky',
-            top: '60px',overflowY:'scroll'
+        <List style={{
+          paddingTop:'20px',
+            width:'100%',
+            position: 'fixed',
+            overflowY:'scroll'
             }}>
 
         <Typography variant='h5' style={{paddingLeft:'15px'}}>

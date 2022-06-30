@@ -137,3 +137,6 @@ export const Posts = [
     comment: 12,
   },
 ];
+
+
+export default Posts
