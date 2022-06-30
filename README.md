@@ -22,4 +22,4 @@
 
 ## Demo
 
-<video src='./demo/demo.mov' width="100%"/>
+[demo.webm](https://user-images.githubusercontent.com/51236601/176670295-4d08d0bf-342e-416c-93fc-9d741ae0bbb0.webm)
