@@ -22,4 +22,4 @@
 
 ## Demo
 
-<video src='demo/demo.mov' width="100%"/>
+<video src='./demo/demo.mov' width="100%"/>
