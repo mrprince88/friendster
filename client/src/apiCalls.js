@@ -17,5 +17,5 @@ export const LoginCall = async (userCredential, dispatch) => {
 export const LogOut = async (dispatch) => {
   dispatch({ type: "LOGOUT" });
   localStorage.clear();
-  window.location.href("/");
+  window.location.href = "/";
 };

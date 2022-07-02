@@ -46,6 +46,7 @@ export default function EditProfile({
     if (coverPicture) formData.append("coverPicture", coverPicture);
     formData.append("userId", user._id);
     axios.put(`/users/${user._id}`, formData).then((res) => console.log(res.data));
+    window.location.reload();
   };
 
   return (
