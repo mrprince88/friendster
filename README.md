@@ -22,5 +22,7 @@
 
 ## Demo
 
+Live demo: https://friendster.azurewebsites.net
+
 [Demo.webm](https://user-images.githubusercontent.com/51236601/176987652-082371f1-0e8a-41fb-a7ed-1f62f98edc0b.webm)
 
