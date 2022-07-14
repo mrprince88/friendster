@@ -1,6 +1,6 @@
 # Friendster
 
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/mrprince88/friendster/tree/add-license-1)
 
 #### Interactive social media site
 
