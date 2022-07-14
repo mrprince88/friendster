@@ -22,7 +22,7 @@
 
 ## Demo
 
-Live demo: https://friendster.azurewebsites.net
+Live demo: <a href="https://friendster.azurewebsites.net" target="_blank">https://friendster.azurewebsites.net</a>
 
 [Demo.webm](https://user-images.githubusercontent.com/51236601/176987652-082371f1-0e8a-41fb-a7ed-1f62f98edc0b.webm)
 
