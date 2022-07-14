@@ -22,7 +22,7 @@ export default function Home() {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    axios.get(`/posts/timeline/${user._id}`).then((res) => {
+    axios.get(`${process.env.REACT_APP_API_URL}/posts/timeline/${user._id}`).then((res) => {
       setPosts(res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
     });
   }, []);

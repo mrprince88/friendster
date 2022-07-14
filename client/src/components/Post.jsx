@@ -49,13 +49,13 @@ export default function Post({ post }) {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    axios.get(`/users/${userId}`).then((res) => setUser(res.data));
+    axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}`).then((res) => setUser(res.data));
     setIsLiked(post.likes.includes(currentUser._id));
   }, []);
 
   const likeHandler = () => {
     axios
-      .put(`/posts/${post._id}/like`, { userId: currentUser._id })
+      .put(`${process.env.REACT_APP_API_URL}/posts/${post._id}/like`, { userId: currentUser._id })
       .then((res) => console.log(res));
     setLikes(isLiked ? likes - 1 : likes + 1);
     setIsLiked(!isLiked);
@@ -80,7 +80,7 @@ export default function Post({ post }) {
 
       <CardContent>
         <Typography paragraph>{desc}</Typography>
-        <CardMedia className={classes.media} image={img} />
+        {img && <CardMedia className={classes.media} image={img} />}
 
         <div class={classes.desc}>
           <Typography variant="subtitle1">{likes} people like this</Typography>

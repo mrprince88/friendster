@@ -34,7 +34,10 @@ export default function Share() {
   const [preview, setPreview] = useState();
   const [image, setImage] = useState();
   useEffect(
-    () => axios.get(`/users/${user._id}`).then((res) => setImage(res.data.profilePicture)),
+    () =>
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/users/${user._id}`)
+        .then((res) => setImage(res.data.profilePicture)),
     []
   );
 
@@ -50,15 +53,19 @@ export default function Share() {
   }, [file]);
 
   const handleSubmit = () => {
+    console.log("start");
     const formData = new FormData();
     formData.append("userId", user._id);
     formData.append("desc", desc);
     if (file) formData.append("file", file);
 
-    axios.post("/posts/", formData).then((res) => {
-      console.log("postData", res.data);
-      window.location.reload();
-    });
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/posts/`, formData)
+      .then((res) => {
+        console.log("postData", res.data);
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

@@ -45,7 +45,9 @@ export default function EditProfile({
     if (profilePicture) formData.append("profilePicture", profilePicture);
     if (coverPicture) formData.append("coverPicture", coverPicture);
     formData.append("userId", user._id);
-    axios.put(`/users/${user._id}`, formData).then((res) => console.log(res.data));
+    axios
+      .put(`${process.env.REACT_APP_API_URL}/users/${user._id}`, formData)
+      .then((res) => console.log(res.data));
     window.location.reload();
   };
 

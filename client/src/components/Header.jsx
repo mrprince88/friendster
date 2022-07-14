@@ -124,13 +124,18 @@ export default function PrimarySearchAppBar() {
   }
 
   useEffect(
-    () => axios.get(`/users/${user._id}`).then((res) => setImage(res.data.profilePicture)),
+    () =>
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/users/${user._id}`)
+        .then((res) => setImage(res.data.profilePicture)),
     []
   );
   const loading = open && users.length === 0;
 
   useEffect(() => {
-    axios.get(`/users/search/${input}`).then((res) => setUsers(res.data));
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/users/search/${input}`)
+      .then((res) => setUsers(res.data));
   }, [input]);
 
   return (

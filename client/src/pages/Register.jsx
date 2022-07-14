@@ -109,7 +109,7 @@ export default function Register() {
       };
 
       axios
-        .post("/auth/register", user)
+        .post(`${process.env.REACT_APP_API_URL}/auth/register`, user)
         .then(navigate("/login"))
         .catch((err) => console.log(err));
     }

@@ -61,7 +61,7 @@ export default function Profile() {
   const [relationship, setRelationship] = useState();
 
   useEffect(() => {
-    axios.get(`/users/${userId}`).then((res) => {
+    axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}`).then((res) => {
       const u = res.data;
       setUser(u);
       setName(u.username);
@@ -71,7 +71,7 @@ export default function Profile() {
       setRelationship(u.relationship);
       setisFollowing(u.followers.includes(currentUser._id));
     });
-    axios.get(`/posts/profile/${userId}`).then((res) => {
+    axios.get(`${process.env.REACT_APP_API_URL}/posts/profile/${userId}`).then((res) => {
       setPosts(res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
     });
     setIsProfile(userId === currentUser._id);
@@ -79,9 +79,12 @@ export default function Profile() {
 
   const followHandler = () => {
     axios
-      .put(`/users/${userId}/${isFollowing ? "unfollow" : "follow"}`, {
-        userId: currentUser._id,
-      })
+      .put(
+        `${process.env.REACT_APP_API_URL}/users/${userId}/${isFollowing ? "unfollow" : "follow"}`,
+        {
+          userId: currentUser._id,
+        }
+      )
       .then((res) => {
         console.log(res);
         setisFollowing(!isFollowing);
@@ -105,7 +108,7 @@ export default function Profile() {
             src={
               user?.coverPicture
                 ? user.coverPicture
-                : "http://localhost:3000/assets/person/noCover.png"
+                : `${process.env.REACT_APP_PUBLIC_URL}/assets/person/noCover.png`
             }
             alt={"cover"}
             className={classes.coverImg}
