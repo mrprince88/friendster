@@ -1,6 +1,6 @@
 ### Friendster
 
-## Version 2:
+## Version 2
 
 
 Live demo: <a href="https://friendster.azurewebsites.net" target="_blank">Click here</a>
