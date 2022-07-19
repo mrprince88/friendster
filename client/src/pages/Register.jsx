@@ -6,16 +6,18 @@ import {
   makeStyles,
   Typography,
   Button,
+  Box,
 } from "@material-ui/core";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CometChat } from "@cometchat-pro/chat";
 
 const styles = makeStyles((theme) => ({
   login: {
     background: "#f0f2f5",
     minWidth: "500px",
-    minHeight: "950px",
+    minHeight: "1000px",
   },
   container: {
     width: "70%",
@@ -97,11 +99,13 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) alert("Passwords Not Match");
-    else {
+    if (password !== confirmPassword) {
+      setErrorMessage(1);
+    } else {
       const user = {
         username: username,
         email: email,
@@ -110,8 +114,26 @@ export default function Register() {
 
       axios
         .post(`${process.env.REACT_APP_API_URL}/auth/register`, user)
-        .then(navigate("/login"))
-        .catch((err) => console.log(err));
+        .then(({ data: user }) => {
+          console.log(user);
+          const newUser = new CometChat.User(user._id);
+          newUser.setName(user.username);
+          CometChat.createUser(newUser, process.env.REACT_APP_CHAT_AUTH_KEY).then(
+            (user) => {
+              console.log("user created", newUser);
+              setErrorMessage(0);
+            },
+            (error) => {
+              console.log("error", error);
+              setErrorMessage(2);
+            }
+          );
+          navigate("/login");
+        })
+        .catch((err) => {
+          console.log(err);
+          setErrorMessage(2);
+        });
     }
   };
 
@@ -157,6 +179,17 @@ export default function Register() {
                     setConfirmPassword(e.target.value);
                   }}
                 />
+
+                {errorMessage && (
+                  <Typography variant="subtitle">
+                    <Box color="error.main">
+                      {errorMessage == 1
+                        ? "Passwords do not match"
+                        : "Some error occured. Please try again"}
+                    </Box>
+                  </Typography>
+                )}
+
                 <Button
                   variant="contained"
                   disableElevation="true"

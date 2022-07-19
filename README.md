@@ -1,5 +1,16 @@
 # Friendster
 
+## Demo
+
+Live demo: <a href="https://friendster.azurewebsites.net" target="_blank">Click here</a>
+<br />
+<br />
+
+[Demo.webm](https://user-images.githubusercontent.com/51236601/176987652-082371f1-0e8a-41fb-a7ed-1f62f98edc0b.webm)
+
+<br />
+<br />
+
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/mrprince88/friendster/tree/add-license-1)
 
 #### Interactive social media site
@@ -19,12 +30,3 @@
 - MongoDB
 - MaterialUI
 - Azure Cloud
-
-## Demo
-
-Live demo: <a href="https://friendster.azurewebsites.net" target="_blank">Click here</a>
-<br />
-<br />
-
-[Demo.webm](https://user-images.githubusercontent.com/51236601/176987652-082371f1-0e8a-41fb-a7ed-1f62f98edc0b.webm)
-

@@ -23,41 +23,34 @@ const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZU
 
 //create a post
 router.post("/", upload.single("file"), async (req, res) => {
-  const containerName = req.body.userId;
-  const blobName = req.file.filename;
-  try {
-    const filePath = "./" + req.file.path;
-    const containerClient = blobServiceClient.getContainerClient(containerName);
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-    const uploadBlobResponse = await blockBlobClient.uploadFile(filePath);
-  } catch (err) {
-    res.status(500).json(err);
-    return;
+  const containerName = req.body.user;
+
+  if (req.file) {
+    let blobName = req.file.filename;
+    try {
+      const filePath = "./" + req.file.path;
+      const containerClient = blobServiceClient.getContainerClient(containerName);
+      const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+      const uploadBlobResponse = await blockBlobClient.uploadFile(filePath);
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
   }
 
   const newPost = new Post({
     ...req.body,
-    img: `https://friendster.blob.core.windows.net/${containerName}/${blobName}`,
+    img: req.file ? `https://friendster.blob.core.windows.net/${containerName}/${blobName}` : "",
   });
 
   try {
-    const savedPost = await newPost.save();
+    let savedPost = await newPost.save();
+    savedPost = await savedPost.populate("user", {
+      username: 1,
+      _id: 1,
+      profilePicture: 1,
+    });
     res.status(200).json(savedPost);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//update a post
-router.put("/:id", async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    if (post.userId === req.body.userId) {
-      await post.updateOne({ $set: req.body });
-      res.status(200).json("the post has been updated");
-    } else {
-      res.status(403).json("you can update only your post");
-    }
   } catch (err) {
     res.status(500).json(err);
   }
@@ -67,7 +60,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (post.userId === req.body.userId) {
+    if (post.user.toString() === req.body.userId) {
       await post.deleteOne();
       res.status(200).json("the post has been deleted");
     } else {
@@ -108,10 +101,18 @@ router.get("/:id", async (req, res) => {
 router.get("/timeline/:userId", async (req, res) => {
   try {
     const currentUser = await User.findById(req.params.userId);
-    const userPosts = await Post.find({ userId: currentUser._id });
+    const userPosts = await Post.find({ user: currentUser._id }).populate("user", {
+      username: 1,
+      _id: 1,
+      profilePicture: 1,
+    });
     const friendPosts = await Promise.all(
       currentUser.followings.map((friendId) => {
-        return Post.find({ userId: friendId });
+        return Post.find({ user: friendId }).populate("user", {
+          username: 1,
+          _id: 1,
+          profilePicture: 1,
+        });
       })
     );
     res.json(userPosts.concat(...friendPosts));
@@ -123,8 +124,38 @@ router.get("/timeline/:userId", async (req, res) => {
 //get user's all posts
 router.get("/profile/:userId", async (req, res) => {
   try {
-    const posts = await Post.find({ userId: req.params.userId });
+    const posts = await Post.find({ user: req.params.userId }).populate("user", {
+      username: 1,
+      _id: 1,
+      profilePicture: 1,
+    });
+
     res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//post comment
+router.post("/:id/comment", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    await post.updateOne({ $push: { comments: req.body } });
+    res.status(200).json("comment added");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//get comments
+router.get("/:id/comments", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id).populate("comments.user", {
+      username: 1,
+      _id: 1,
+      profilePicture: 1,
+    });
+    res.status(200).json(post.comments);
   } catch (err) {
     res.status(500).json(err);
   }

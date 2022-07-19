@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const User = require("./User");
 
 const PostSchema = new mongoose.Schema(
   {
-    userId: {
-      type: String,
-      required: true,
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
     },
     desc: {
       type: String,
@@ -17,6 +18,18 @@ const PostSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    comments: [
+      {
+        text: {
+          type: String,
+        },
+        user: {
+          type: mongoose.Types.ObjectId,
+          ref: "User",
+        },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

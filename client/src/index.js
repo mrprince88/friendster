@@ -2,12 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { AuthContextProvider } from "./context/AuthContext";
+import { SocketContextProvider } from "./context/SocketContext";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <SocketContextProvider>
     <AuthContextProvider>
       <App />
     </AuthContextProvider>
-  </React.StrictMode>,
+  </SocketContextProvider>,
   document.getElementById("root")
 );

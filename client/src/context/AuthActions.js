@@ -7,10 +7,15 @@ export const LoginSuccess = (user) => ({
   payload: user,
 });
 
-export const LoginFailure = (error) => ({
+export const UpdateUser = (user) => ({
+  type: "UPDATE_USER",
+  payload: user,
+});
+
+export const LoginFailure = () => ({
   type: "LOGIN_FAILURE",
 });
 
-export const LogOut = (error) => ({
+export const LogOut = () => ({
   type: "LOGOUT",
 });

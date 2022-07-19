@@ -1,4 +1,0 @@
-{
-  "appService.defaultWebAppToDeploy": "/subscriptions/d0131e46-f626-430c-ba0a-f93ce106dc54/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/friendster-rest-api",
-  "appService.deploySubpath": "api"
-}

@@ -7,6 +7,7 @@ import {
   makeStyles,
   Typography,
   Button,
+  Box,
   CircularProgress,
 } from "@material-ui/core";
 import { LoginCall } from "../apiCalls";
@@ -18,7 +19,7 @@ const styles = makeStyles((theme) => ({
   login: {
     background: "#f0f2f5",
     minWidth: "500px",
-    minHeight: "950px",
+    minHeight: "1000px",
   },
   container: {
     width: "70%",
@@ -94,11 +95,12 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, isFetching, dispatch } = useContext(AuthContext);
+  const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    LoginCall({ email: email, password: password }, dispatch);
+    LoginCall({ email: email, password: password }, dispatch, setIsError);
   };
 
   return (
@@ -125,6 +127,11 @@ export default function Login() {
                   className={classes.loginInput}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                {isError && (
+                  <Typography variant="subtitle">
+                    <Box color="error.main">Invalid password or username. Please try again.</Box>
+                  </Typography>
+                )}
                 <Button
                   variant="contained"
                   disableElevation="true"

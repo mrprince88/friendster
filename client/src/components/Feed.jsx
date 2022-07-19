@@ -1,6 +1,8 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import Share from "./Share";
 import Post from "./Post";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const styles = makeStyles((theme) => ({
   container: {
@@ -10,27 +12,23 @@ const styles = makeStyles((theme) => ({
       paddingTop: "8%",
     },
   },
-
-  feed: {
-    padding: "0 2% 0 2%",
-    [theme.breakpoints.down("sm")]: {
-      padding: "0",
-    },
-  },
 }));
 
-export default function Feed({ posts }) {
+export default function Feed({ posts, setPosts, userId }) {
   const classes = styles();
+  const { user } = useContext(AuthContext);
 
   return (
     <Grid className={classes.container}>
-      <Grid container className={classes.feed} spacing={3}>
-        <Grid item xs={12}>
-          <Share />
-        </Grid>
+      <Grid container spacing={2}>
+        {user._id == userId && (
+          <Grid item xs={12}>
+            <Share setPosts={setPosts} />
+          </Grid>
+        )}
         {posts?.map((post) => (
           <Grid item key={post._id} xs={12}>
-            <Post post={post} />
+            <Post post={post} posts={posts} setPosts={setPosts} />
           </Grid>
         ))}
       </Grid>

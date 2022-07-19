@@ -84,7 +84,7 @@ router.put(
         const user = await User.findByIdAndUpdate(req.params.id, {
           $set: newBody,
         });
-        res.status(200).json("Account has been updated");
+        res.status(200).json(user);
       } catch (err) {
         return res.status(500).json(err);
       }

@@ -14,8 +14,10 @@ import {
   FormLabel,
 } from "@material-ui/core";
 import { PhotoCamera } from "@material-ui/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { CometChat } from "@cometchat-pro/chat";
+import { AuthContext } from "../context/AuthContext";
 
 export default function EditProfile({
   user,
@@ -34,6 +36,7 @@ export default function EditProfile({
 }) {
   const [profilePicture, setProfilePicture] = useState();
   const [coverPicture, setCoverPicture] = useState();
+  const { dispatch } = useContext(AuthContext);
 
   const submitHandler = () => {
     const formData = new FormData();
@@ -47,8 +50,16 @@ export default function EditProfile({
     formData.append("userId", user._id);
     axios
       .put(`${process.env.REACT_APP_API_URL}/users/${user._id}`, formData)
-      .then((res) => console.log(res.data));
-    window.location.reload();
+      .then(({ data: user }) => {
+        const newUser = new CometChat.User(user._id);
+        newUser.setName(user.username);
+        newUser.setAvatar(user.profilePicture);
+        CometChat.updateUser(newUser, process.env.REACT_APP_CHAT_AUTH_KEY).then((user) => {
+          console.log("user updated", newUser);
+          dispatch({ type: "UPDATE_USER", payload: user });
+          window.location.reload();
+        });
+      });
   };
 
   return (
