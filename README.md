@@ -1,6 +1,25 @@
-# Friendster
+### Friendster
 
-## Demo
+## Version 2:
+
+
+Live demo: <a href="https://friendster.azurewebsites.net" target="_blank">Click here</a>
+
+
+<br />
+<br />
+
+[2022-07-19T12-52-25D1-37.webm](https://user-images.githubusercontent.com/51236601/179755665-cd62d177-4183-4f4b-9659-b4edb1efb569.webm)
+
+New Features:
+- 📌 Chat support with video and voice call features.
+- 📌 Realtime notification sytem using Socket.IO
+- 📌 Added comment sections for posts.
+- 📌 Improved UI to a more intuitive design.
+- 📌 Loading screens for seamless transition.
+
+
+# Demo
 
 Live demo: <a href="https://friendster.azurewebsites.net" target="_blank">Click here</a>
 <br />
