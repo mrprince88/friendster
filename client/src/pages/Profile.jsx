@@ -22,6 +22,7 @@ import PeopleIcon from "@material-ui/icons/People";
 import EditIcon from "@material-ui/icons/Edit";
 import EditProfile from "../components/EditProfile";
 import OnlineFriends from "../components/OnlineFriends";
+import Loading from "../components/Loading";
 
 const styles = makeStyles((theme) => ({
   banner: {
@@ -64,6 +65,13 @@ const styles = makeStyles((theme) => ({
   card: {
     width: "100%",
     borderRadius: "0 0 0.8rem 0.8rem",
+  },
+  about: {
+    marginTop: "20px",
+    marginLeft: "auto",
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: "15px",
+    },
   },
 }));
 
@@ -128,7 +136,7 @@ export default function Profile() {
 
   return (
     <>
-      {user && posts && (
+      {user && posts ? (
         <>
           <CssBaseline />
           <Header />
@@ -197,14 +205,7 @@ export default function Profile() {
                         )}
                       </div>
                     </Grid>
-                    <Grid
-                      item
-                      lg={2}
-                      style={{
-                        marginTop: "20px",
-                        marginLeft: "auto",
-                      }}
-                    >
+                    <Grid item lg={2} className={classes.about}>
                       <Typography variant="h5"> About</Typography>
                       <Typography variant="subtitle1"> Gender: {user?.gender}</Typography>
                       <Typography variant="subtitle1"> City: {user?.city}</Typography>
@@ -239,6 +240,8 @@ export default function Profile() {
           </Grid>
           <OnlineFriends />
         </>
+      ) : (
+        <Loading />
       )}
     </>
   );

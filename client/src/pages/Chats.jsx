@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { CometChatUI } from "../CometChatWorkspace/src";
 import { AuthContext } from "../context/AuthContext";
 import { CometChat } from "@cometchat-pro/chat";
+import Loading from "../components/Loading";
 
 export default function Chats() {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,12 +25,14 @@ export default function Chats() {
   return (
     <>
       <Header />
-      {!isLoading && (
+      {!isLoading ? (
         <>
           <div style={{ width: "100%", height: "94vh" }}>
             <CometChatUI />
           </div>
         </>
+      ) : (
+        <Loading />
       )}
     </>
   );

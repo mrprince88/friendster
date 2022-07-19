@@ -17,7 +17,7 @@ const styles = makeStyles((theme) => ({
   login: {
     background: "#f0f2f5",
     minWidth: "500px",
-    minHeight: "1000px",
+    minHeight: "100vh",
   },
   container: {
     width: "70%",

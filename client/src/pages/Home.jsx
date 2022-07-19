@@ -7,6 +7,7 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import OnlineFriends from "../components/OnlineFriends";
 import { SocketContext } from "../context/SocketContext";
+import Loading from "../components/Loading";
 
 const styles = makeStyles((theme) => ({
   sidebar: {
@@ -18,7 +19,7 @@ const styles = makeStyles((theme) => ({
   },
   feed: {
     padding: "0 12% 0 12%",
-    minHeight: "92vh",
+    // minHeight: "92vh",
     [theme.breakpoints.down("md")]: {
       padding: "0 2% 0 2%",
     },
@@ -52,15 +53,11 @@ export default function Home() {
 
   return (
     <>
-      {posts && (
+      {posts ? (
         <>
           <CssBaseline />
           <Header />
-          <Grid
-            container
-            justifyContent="center"
-            style={{ background: "#f0f2f5", minWidth: "92vh" }}
-          >
+          <Grid container justifyContent="center" style={{ background: "#f0f2f5" }}>
             <Grid item lg={2} className={classes.sidebar}>
               <Sidebar />
             </Grid>
@@ -71,6 +68,8 @@ export default function Home() {
             <OnlineFriends />
           </Grid>
         </>
+      ) : (
+        <Loading />
       )}
     </>
   );

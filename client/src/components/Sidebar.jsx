@@ -120,7 +120,12 @@ export default function Sidebar() {
               </>
             }
           />
-          <img src="http://localhost:3000/assets/ad.jpg" height="320px" width="100%" alt="user" />
+          <img
+            src={`${process.env.REACT_APP_PUBLIC_URL}/assets/ad.jpg`}
+            height="320px"
+            width="100%"
+            alt="user"
+          />
         </Card>
       </Grid>
     </Grid>

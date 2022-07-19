@@ -1,8 +1,26 @@
 const { Server } = require("socket.io");
+const http = require("http");
+const express = require("express");
+const cors = require("cors");
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-const io = new Server({
+app.use(
+  cors({
+    origin: "https://friendster.azurewebsites.net",
+    credentials: true,
+    optionSuccessStatus: 200,
+  })
+);
+
+app.get("/", (req, res) => {
+  res.send("Working");
+});
+
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://friendster.azurewebsites.net",
   },
 });
 
@@ -56,4 +74,6 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(5000);
+httpServer.listen(PORT, () => {
+  console.log("listening on port", PORT);
+});
