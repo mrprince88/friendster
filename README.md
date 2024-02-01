@@ -1,5 +1,8 @@
 ### Friendster
 
+## Revamp in progress
+Link: https://github.com/mrprince88/friendster-revamp
+
 ## Version 2
 
 
